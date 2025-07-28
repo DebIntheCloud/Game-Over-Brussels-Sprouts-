@@ -7,8 +7,7 @@ import xbox from './images/xbox.png';
 const GRID_SIZE = 4;
 
 export default function Map() {
-
-    const initialItems = [
+  const initialItems = [
     { x: 1, y: 0, img: dumbbells, name: 'dumbbells' },
     { x: 3, y: 2, img: fizz, name: 'fizz' },
     { x: 2, y: 3, img: xbox, name: 'xbox' },
@@ -104,33 +103,73 @@ export default function Map() {
         // Check for item at new location
         const item = itemList.find(i => i.x === x && i.y === y);
         if (item) {
-            setInventory(prevInv => [...prevInv, item.name]); // Add to inventory
-            setItemList(prevItems => prevItems.filter(i => !(i.x === x && i.y === y))); // Remove from grid
+          setInventory(prevInv => {
+            // Prevent duplicates
+            if (prevInv.some(i => i.name === item.name)) {
+              return prevInv;
+            }
+            return [...prevInv, { name: item.name, img: item.img }];
+          });
+          setItemList(prevItems => prevItems.filter(i => !(i.x === x && i.y === y)));
         }
 
         return { x, y };
       });
     }
 
-    window.addEventListener('keydown', handleKeyDown); 
-    //whenever any key is pressed anywhere on the page, run the function handleKeyDown
+    window.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown); 
-    //now stop listening for key presses.
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [itemList]);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${GRID_SIZE}, calc(100vw / ${GRID_SIZE}))`,
-        gridTemplateRows: `repeat(${GRID_SIZE}, calc(100vh / ${GRID_SIZE}))`,
-        gap: 1,
-      }}
-    >
-      {cells}
-    </div>
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          top: 10,
+          right: 10,
+          backgroundColor: 'white',
+          padding: '10px',
+          border: '1px solid black',
+          borderRadius: '6px',
+          maxWidth: '150px',
+          fontFamily: 'Arial, sans-serif',
+          fontSize: '14px',
+          zIndex: 1000,
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '8px',
+          minHeight: '40px',
+        }}
+      >
+        <h3 style={{ margin: '0 0 8px 0', width: '100%', fontSize: '16px', textAlign: 'center', background: 'teal' }}>Inventory</h3>
+        {inventory.length === 0 ? (
+          <div><em>There is nothing in the inventory</em></div>
+        ) : (
+          inventory.map((item, index) => (
+            <img
+              key={index}
+              src={item.img}
+              alt={item.name}
+              title={item.name}
+              style={{ width: 30, height: 30, objectFit: 'contain' }}
+            />
+          ))
+        )}
+      </div>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(${GRID_SIZE}, calc(100vw / ${GRID_SIZE}))`,
+          gridTemplateRows: `repeat(${GRID_SIZE}, calc(100vh / ${GRID_SIZE}))`,
+          gap: 1,
+        }}
+      >
+        {cells}
+      </div>
+    </>
   );
 }
-
