@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import matt from './images/matt.png';
 import fizz from './images/fizz.png';
 import dumbbells from './images/dumbbells.png';
 import xbox from './images/xbox.png';
+import wife from './images/wife.jpg';
+import grunt from './sounds/grunt.wav';
+import locknload from './sounds/locknload.ogg';
+import slurp from './sounds/slurp.wav';
+import smooch from './sounds/smooch.wav';
 
 const GRID_SIZE = 4;
 
 export default function Map() {
   const initialItems = [
-    { x: 1, y: 0, img: dumbbells, name: 'dumbbells' },
-    { x: 3, y: 2, img: fizz, name: 'fizz' },
-    { x: 2, y: 3, img: xbox, name: 'xbox' },
+    { x: 1, y: 0, img: dumbbells, name: 'dumbbells', sound: grunt },
+    { x: 3, y: 2, img: fizz, name: 'fizz', sound: slurp },
+    { x: 2, y: 3, img: xbox, name: 'xbox', sound: locknload },
+    { x: 3, y: 3, img: wife, name: 'wife', sound: smooch },
   ];
 
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 });
@@ -103,6 +109,10 @@ export default function Map() {
         // Check for item at new location
         const item = itemList.find(i => i.x === x && i.y === y);
         if (item) {
+          // Play sound
+          const audio = new Audio(item.sound);
+          audio.play().catch(err => console.warn('Audio playback failed', err));
+
           setInventory(prevInv => {
             // Prevent duplicates
             if (prevInv.some(i => i.name === item.name)) {
@@ -110,6 +120,7 @@ export default function Map() {
             }
             return [...prevInv, { name: item.name, img: item.img }];
           });
+
           setItemList(prevItems => prevItems.filter(i => !(i.x === x && i.y === y)));
         }
 
@@ -144,7 +155,20 @@ export default function Map() {
           minHeight: '40px',
         }}
       >
-        <h3 style={{ margin: '0 0 8px 0', width: '100%', fontSize: '16px', textAlign: 'center', background: 'teal' }}>Inventory</h3>
+        <h3
+          style={{
+            margin: '0 0 8px 0',
+            width: '100%',
+            fontSize: '16px',
+            textAlign: 'center',
+            background: 'teal',
+            color: 'white',
+            padding: '4px 0',
+            borderRadius: '4px',
+          }}
+        >
+          Inventory
+        </h3>
         {inventory.length === 0 ? (
           <div><em>There is nothing in the inventory</em></div>
         ) : (
