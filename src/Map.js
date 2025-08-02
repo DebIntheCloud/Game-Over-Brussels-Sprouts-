@@ -4,6 +4,8 @@ import fizz from './images/fizz.png';
 import dumbbells from './images/dumbbells.png';
 import xbox from './images/xbox.png';
 import wife from './images/wife.jpg';
+import enemy from './images/enemy.png';
+import farm from './images/farm.jpg';
 import grunt from './sounds/grunt.wav';
 import locknload from './sounds/locknload.ogg';
 import slurp from './sounds/slurp.wav';
@@ -22,6 +24,7 @@ export default function Map() {
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 });
   const [inventory, setInventory] = useState([]);
   const [itemList, setItemList] = useState(initialItems);
+  const [enemyPos, setEnemyPos] = useState({ x: 3, y: 0 });
 
   const cells = [];
 
@@ -29,15 +32,19 @@ export default function Map() {
     for (let x = 0; x < GRID_SIZE; x++) {
       const isPlayerHere = playerPos.x === x && playerPos.y === y;
       const itemHere = itemList.find(item => item.x === x && item.y === y);
+      const isEnemyHere = enemyPos.x === x && enemyPos.y === y;
 
       cells.push(
         <div
           key={`${x}-${y}`}
           style={{
-            width: `calc(100vw / ${GRID_SIZE})`,
-            height: `calc(100vh / ${GRID_SIZE})`,
-            border: '1px solid #999',
-            backgroundColor: 'lightgrey',
+            // width: `calc(100vw / ${GRID_SIZE})`,
+            // height: `calc(100vh / ${GRID_SIZE})`,
+            width: '100%',
+            height: '100%',
+            border: '1px solid #f4a261',
+            backgroundColor: '#f4a261',
+            // backgroundColor: 'lightgrey',
             boxSizing: 'border-box',
             display: 'flex',
             justifyContent: 'center',
@@ -68,6 +75,21 @@ export default function Map() {
                 height: '90%',
                 objectFit: 'contain',
                 imageRendering: 'pixelated',
+              }}
+            />
+          )}
+          {isEnemyHere && (
+            <img
+              src={enemy}
+              alt="Enemy"
+              style={{
+                position: 'absolute',
+                width: '60%',
+                height: '60%',
+                objectFit: 'contain',
+                imageRendering: 'pixelated',
+                opacity: 0.8,
+                zIndex: 1,
               }}
             />
           )}
@@ -109,6 +131,7 @@ export default function Map() {
         // Check for item at new location
         const item = itemList.find(i => i.x === x && i.y === y);
         if (item) {
+        
           // Play sound
           const audio = new Audio(item.sound);
           audio.play().catch(err => console.warn('Audio playback failed', err));
@@ -134,6 +157,27 @@ export default function Map() {
     };
   }, [itemList]);
 
+  useEffect(() => {
+    const directions = [
+      { x:0, y: -1 },
+      { x:0, y: 1 },
+      { x:-1, y: 0 },
+      { x:1, y: 0 },
+    ];
+
+    const moveEnemy = () => {
+      const dir = directions[Math.floor(Math.random() * directions.length)];
+      setEnemyPos(prev => {
+        const newX = Math.max(0, Math.min(GRID_SIZE - 1, prev.x + dir.x));
+        const newY = Math.max(0, Math.min(GRID_SIZE - 1, prev.y + dir.y));
+        return { x: newX, y: newY };
+      });
+    };
+
+    const interval = setInterval(moveEnemy, 500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <div
@@ -141,7 +185,9 @@ export default function Map() {
           position: 'fixed',
           top: 10,
           right: 10,
-          backgroundColor: 'white',
+          background: `url(${farm})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           padding: '10px',
           border: '1px solid black',
           borderRadius: '6px',
@@ -170,7 +216,7 @@ export default function Map() {
           Inventory
         </h3>
         {inventory.length === 0 ? (
-          <div><em>There is nothing in the inventory</em></div>
+          <div><em style={{ color: 'white' }}>There is nothing in the inventory</em></div>
         ) : (
           inventory.map((item, index) => (
             <img
