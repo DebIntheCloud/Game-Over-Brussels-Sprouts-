@@ -10,6 +10,7 @@ import grunt from './sounds/grunt.wav';
 import locknload from './sounds/locknload.ogg';
 import slurp from './sounds/slurp.wav';
 import smooch from './sounds/smooch.wav';
+import smallville from './sounds/smallville.wav';
 
 const GRID_SIZE = 4;
 
@@ -19,6 +20,7 @@ export default function Map() {
     { x: 3, y: 2, img: fizz, name: 'fizz', sound: slurp },
     { x: 2, y: 3, img: xbox, name: 'xbox', sound: locknload },
     { x: 3, y: 3, img: wife, name: 'wife', sound: smooch },
+    { x: 1, y: 2, img: farm, name: 'farm', sound: smallville },
   ];
 
   const [playerPos, setPlayerPos] = useState({ x: 0, y: 0 });
@@ -44,7 +46,6 @@ export default function Map() {
             height: '100%',
             border: '1px solid #f4a261',
             backgroundColor: '#f4a261',
-            // backgroundColor: 'lightgrey',
             boxSizing: 'border-box',
             display: 'flex',
             justifyContent: 'center',
@@ -58,8 +59,8 @@ export default function Map() {
               alt={itemHere.name}
               style={{
                 position: 'absolute',
-                width: '50%',
-                height: '50%',
+                width: '100%',
+                height: '100%',
                 objectFit: 'contain',
                 imageRendering: 'pixelated',
               }}
@@ -135,6 +136,12 @@ export default function Map() {
           // Play sound
           const audio = new Audio(item.sound);
           audio.play().catch(err => console.warn('Audio playback failed', err));
+
+         // Stop sound after 2 seconds (2000 milliseconds)
+          setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+          }, 2000);
 
           setInventory(prevInv => {
             // Prevent duplicates
