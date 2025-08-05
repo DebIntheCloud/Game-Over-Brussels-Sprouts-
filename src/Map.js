@@ -187,6 +187,24 @@ export default function Map() {
 
   return (
     <>
+      <button
+        style={{
+          position: 'fixed',
+          top: 60,
+          right: 10,
+          padding: '6px 12px',
+          backgroundColor: '#e76f51',
+          border: 'none',
+          color: 'white',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          zIndex: 1001,
+        }}
+        onClick={() => setInventory([])}
+      >
+        Clear Inventory
+      </button>
+
       <div
         style={{
           position: 'fixed',
