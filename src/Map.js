@@ -129,6 +129,15 @@ export default function Map() {
             return prev;
         }
 
+      // Check for collision with enemy
+      if (x === enemyPos.x && y === enemyPos.y) {
+        alert("💀 Game Over!");
+        // Reset everything
+        setInventory([]);
+        setItemList(initialItems);
+        return { x: 0, y: 0 }; // Respawn player
+      }
+
         // Check for item at new location
         const item = itemList.find(i => i.x === x && i.y === y);
         if (item) {
