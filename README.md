@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+React Grid Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple React-based grid game where you control the player, collect items, and avoid the enemy. The game features movement, item collection with sound effects, inventory tracking, and a roaming enemy that ends the game on collision.
 
-## Available Scripts
+Features
 
-In the project directory, you can run:
+Player Movement
+Move using arrow keys or WASD. Boundaries prevent moving outside the grid.
 
-### `npm start`
+Items and Sounds
+Collect items placed on the grid (dumbbells, fizz, Xbox, wife, farm). Each item plays a unique sound when collected. Inventory prevents duplicates.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Inventory System
+Collected items appear in a persistent inventory panel. Clear inventory with one click.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Enemy Logic
+Enemy moves randomly every 500ms. Colliding with the enemy triggers a game over message. The player respawns, and inventory resets.
 
-### `npm test`
+Demo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Grid size: 4x4
 
-### `npm run build`
+Items and enemy spawn in preset positions.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Game board uses CSS Grid and Flexbox for layout.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Controls
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Arrow Keys or WASD → Move player
 
-### `npm run eject`
+Move onto the same tile to collect an item
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Use the "Clear Inventory" button to reset
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Tech Stack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+React (functional components with hooks)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+JavaScript
 
-## Learn More
+CSS Grid and Flexbox
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+HTML5 Audio API
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Installation
 
-### Code Splitting
+Clone the repository:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+git clone https://github.com/yourusername/react-grid-game.git
+cd react-grid-game
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Install dependencies:
 
-### Making a Progressive Web App
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+Run the app:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+npm start
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Build for production:
 
-### `npm run build` fails to minify
+npm run build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+File Structure
+src/
+│── images/        # Player, enemy, and item assets
+│── sounds/        # Item pickup sound files
+│── Map.js         # Main game component
+│── App.js         # Entry point
+│── index.js       # React root
+
+Possible Extensions
+
+Add a scoring system (points per item)
+
+Multiple enemy types with different speeds
+
+Player health system instead of instant game over
+
+Procedural item generation
+
+Background music toggle
